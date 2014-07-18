@@ -2,14 +2,17 @@ var express = require('express'),
     app = express(),
     http = require('http').Server(app),
     io = require('socket.io')(http),
-    port = 0;
+    path = require('path'),
+    morgan = require('morgan'),
+    port = 8080;
 
-app.use('/html', express.static('html'));
-app.use('/style', express.static('style'));
-app.use('/js', express.static('js'));
+app.use(morgan());
+app.use(express.static(path.join(__dirname, 'html')));
+app.use(express.static(path.join(__dirname, 'style')));
+app.use(express.static(path.join(__dirname, 'js')));
 
 app.get('/', function(req, res){
-  res.sendFile('html/index.html');
+  res.sendfile('index.html');
 });
 
 io.on('connection', function(socket){
