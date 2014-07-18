@@ -12,16 +12,16 @@ s.listen(5)
 
 io.setup(door_pin, io.IN, pull_up_down=io.PUD_UP)
 
+(client, address) = s.accept()
 while True:
-  (client, address) = s.accept()
   if io.input(door_pin):
     print("I not R door")
     if last_status:
-      client.sendall("false")
+      client.send(bytes("false").encode('UTF-8'))
       last_status = False
   else:
     print("I am door")
     if not last_status:
-      client.sendall("true")
+      client.send(bytes("true").encode('UTF-8'))
       last_status = True
   time.sleep(0.5)

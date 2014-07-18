@@ -4,8 +4,8 @@ var socket = io(),
       
   });
 
-  socket.on('status', function(state){
-    if ( state ){
+  socket.on('status', function(open){
+    if ( !open ){
       $status.addClass('avail');
       $status.removeClass('not-avail');
     }else{

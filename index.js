@@ -24,20 +24,16 @@ client.connect(localport, localHost);
 io.on('connection', function(socket){
   socket.emit('welcome', {});
   client.on('data', function(data){
-    socket.emit('status', data);
+    var status = data.toString('utf8');
+    var bool = status.toLowerCase() == 'true';
+    socket.emit('status', bool);
   });
   //socket.emit('status', false);
   socket.on('disconnect', function(){
-    //User disconnected
+    console.log("User disconnected");
   });
 
-  //socket.emit('status', function(){
-    // Update the status
-  //});
 });
-
-
-
 http.listen(port, function(){
   console.log("Listening on *:" + port);
 });
