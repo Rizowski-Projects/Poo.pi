@@ -6,7 +6,7 @@ io.setmode(io.BCM)
 door_pin = 23
 last_status = False
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STEAM)
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('localhost', 8000))
 s.listen(5)
 
@@ -17,11 +17,11 @@ while True:
   if io.input(door_pin):
     print("I not R door")
     if last_status:
-      client.sendall(False)
+      client.sendall("false")
       last_status = False
   else:
     print("I am door")
     if not last_status:
-      client.sendall(True)
+      client.sendall("true")
       last_status = True
   time.sleep(0.5)

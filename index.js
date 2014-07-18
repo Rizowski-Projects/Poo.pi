@@ -19,7 +19,7 @@ app.get('/', function(req, res){
   res.sendfile('index.html');
 });
 
-client.conenct(localport, localHost);
+client.connect(localport, localHost);
 
 io.on('connection', function(socket){
   socket.emit('welcome', {});
