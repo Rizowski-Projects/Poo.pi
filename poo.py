@@ -21,7 +21,7 @@ while True:
       last_status = False
   else:
     print("I am door")
-    if !last_status:
+    if not last_status:
       client.sendall(True)
       last_status = True
   time.sleep(0.5)
