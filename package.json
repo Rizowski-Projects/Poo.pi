@@ -1,0 +1,23 @@
+{
+  "name": "Poo.pi",
+  "version": "0.0.0",
+  "description": "A Project for determining if a bathroom stall is open using a RPi and a door switch.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rizowski/Poo.pi.git"
+  },
+  "author": "Colten Rouska",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rizowski/Poo.pi/issues"
+  },
+  "homepage": "https://github.com/rizowski/Poo.pi",
+  "devDependencies": {
+    "express": "^4.6.1",
+    "socket.io": "^1.0.6"
+  }
+}
