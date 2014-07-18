@@ -4,7 +4,11 @@ var express = require('express'),
     io = require('socket.io')(http),
     path = require('path'),
     morgan = require('morgan'),
-    port = 8080;
+    port = 8080,
+    net = require('net'),
+    localHost = '127.0.0.1',
+    localport = 8000,
+    client = new net.Socket();
 
 app.use(morgan());
 app.use(express.static(path.join(__dirname, 'html')));
@@ -15,16 +19,21 @@ app.get('/', function(req, res){
   res.sendfile('index.html');
 });
 
+client.conenct(localport, localHost);
+
 io.on('connection', function(socket){
   socket.emit('welcome', {});
-
+  client.on('data', function(data){
+    socket.emit('status', data);
+  });
+  //socket.emit('status', false);
   socket.on('disconnect', function(){
     //User disconnected
   });
 
-  socket.emit('update', function(){
+  //socket.emit('status', function(){
     // Update the status
-  });
+  //});
 });
 
 

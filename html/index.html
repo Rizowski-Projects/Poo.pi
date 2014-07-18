@@ -1,23 +1,13 @@
 <html>
   <head>
     <title>Can I Poopi?</title>
-    <style>
-      .status{
-        position: absolute;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-      .avail{
-        background: green;
-      }
-      .not-avail{
-        background: red;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
     <div id="status" class="status avail">
     </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="view.js"></script>
   </body>
 </html>
