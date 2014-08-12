@@ -1,12 +1,18 @@
 var socket = io(),
     $status = $('#status'),
     $statusMsg = $('#status-msg'),
-    theClient = null;
+    theClient = null,
+    populateOnline = function(connected){
+      var $online = $('#online');
+      $online.html("");
+      for(loc in connected)
+        $online.append("<li id="+connected[loc]+">"+connected[loc]+"</li>");
+    }
 
   socket.on("welcome", function(client){
     console.log(client);
-    theClient = client;
-    $('#online').append("<li id="+client.id+">"+client.id+"</li>");
+    if(!theClient)
+      theClient = client;
     //toastr notification
   });
 
@@ -21,9 +27,12 @@ var socket = io(),
       $status.removeClass('not-avail');
     }
   });
-
-  socket.on('disconnected', function(id){
-    $('#'+id).remove();
+  // Connected event to loop over new connected array
+  socket.on('connected', function(connected){
+    populateOnline(connected);
+  });
+  socket.on('disconnected', function(connected){
+    populateOnline(connected);
   });
 
   socket.on('queued', function(id){
@@ -32,4 +41,7 @@ var socket = io(),
 
   $('#queue').click(function(){
     socket.emit("queue-me", theClient.id);
+  });
+  $('#dq').click(function(){
+    socket.emit("dq-me", theClient.id);
   });

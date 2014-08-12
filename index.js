@@ -10,7 +10,9 @@ var express = require('express'),
     localport = 8000,
     client = new net.Socket(),
     queue = [],
-    inArray = function(a,b){return!!~a.indexOf(b)};
+    connected = [],
+    inArray = function(a,b){return!!~a.indexOf(b)},
+    removeInArray = function(array, item){ var location = array.indexOf(item); if(location> -1){array.splice(location, 1)}};
 
 app.use(morgan());
 app.use(express.static(path.join(__dirname, 'html')));
@@ -24,8 +26,10 @@ app.get('/', function(req, res){
 // client.connect(localport, localHost);
 
 io.on('connection', function(socket){
-  console.log(socket.client.id + " connected")
-  io.emit('welcome', {id: socket.client.id, connected: []});
+  console.log(socket.client.id + " connected");
+  connected.push(socket.client.id);
+  io.emit('welcome', {id: socket.client.id});
+  io.emit('connected', connected);
   // client.on('data', function(response){
   //   var status = response.toString('utf8');
   //   var closed = status.toLowerCase() == 'true';
@@ -34,20 +38,20 @@ io.on('connection', function(socket){
   socket.emit('statusUpdate', true);
   socket.on('disconnect', function(){
     //timed removal? Instant removal?
-    io.emit('disconnected', socket.client.id);
+    removeInArray(connected, socket.client.id);
+    io.emit('disconnected', connected);
     console.log(socket.client.id + " User disconnected");
   });
 
   socket.on('queue-me', function(id){
-    console.log(id);
-    console.log(queue);
-    var result = inArray(queue, id);
-    console.log(result);
-    if(!result){// In coffee convert, item in array check can be used
+    if(!inArray(queue, id)){// In coffee convert, item in array check can be used
       queue.push(id);
       console.log(id + " has been queued");
       io.emit('queued', id);
     }
+  });
+  socket.on('dq-me', function(id){
+
   });
 
 });
