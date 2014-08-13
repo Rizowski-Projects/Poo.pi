@@ -2,12 +2,12 @@ var socket = io(),
     $status = $('#status'),
     $statusMsg = $('#status-msg'),
     theClient = null,
-    populateOnline = function(connected){
-      var $online = $('#online');
-      $online.html("");
-      for(loc in connected)
-        $online.append("<li id="+connected[loc]+">"+connected[loc]+"</li>");
-    }
+    popUl = function(selectorStr, arr){
+      var $ul = $("#"+selectorStr);
+      $ul.html("");
+      for(loc in arr)
+        $ul.append("<li id="+arr[loc]+">"+arr[loc]+"</li>");
+    };
 
   socket.on("welcome", function(client){
     console.log(client);
@@ -29,14 +29,18 @@ var socket = io(),
   });
   // Connected event to loop over new connected array
   socket.on('connected', function(connected){
-    populateOnline(connected);
+    popUl("online", connected);
   });
   socket.on('disconnected', function(connected){
-    populateOnline(connected);
+    popUl("online", connected);
   });
 
-  socket.on('queued', function(id){
-    $('#queue-list').append('<li id="'+id+'">'+id+'</li>');
+  socket.on('queued', function(queued){
+    popUl("queue-list", queued);
+  });
+
+  socket.on('dqd', function(queued){
+    popUl("queue-list", queued);
   });
 
   $('#queue').click(function(){

@@ -47,11 +47,13 @@ io.on('connection', function(socket){
     if(!inArray(queue, id)){// In coffee convert, item in array check can be used
       queue.push(id);
       console.log(id + " has been queued");
-      io.emit('queued', id);
+      io.emit('queued', queue);
     }
   });
   socket.on('dq-me', function(id){
-
+    removeInArray(queue, id);
+    console.log(id + " has been dqd");
+    io.emit("dqd", queue);
   });
 
 });
