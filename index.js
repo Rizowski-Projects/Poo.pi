@@ -26,6 +26,7 @@ app.get('/', function(req, res){
 io.on('connection', function(socket){
   io.emit('welcome', {id: socket.client.id});
   qManager.addConnected(socket.client.id);
+  qManager.updateQd();
   // client.on('data', function(response){
   //   var status = response.toString('utf8');
   //   var closed = status.toLowerCase() == 'true';
