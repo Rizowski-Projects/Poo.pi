@@ -21,18 +21,21 @@ app.get('/', function(req, res){
   res.sendfile('index.html');
 });
 
-// client.connect(localport, localHost);
+client.connect(localport, localHost);
 
 io.on('connection', function(socket){
+
   io.emit('welcome', {id: socket.client.id});
   qManager.addConnected(socket.client.id);
   qManager.updateQd();
-  // client.on('data', function(response){
-  //   var status = response.toString('utf8');
-  //   var closed = status.toLowerCase() == 'true';
-  //   socket.emit('statusUpdate', closed);
-  // });
-  socket.emit('statusUpdate', true);
+
+  client.on('data', function(response){
+    var status = response.toString('utf8');
+    var closed = status.toLowerCase() == 'true';
+    socket.emit('statusUpdate', closed);
+  });
+
+  // socket.emit('statusUpdate', true);
   socket.on('disconnect', function(){
     //timed removal? Instant removal?
     qManager.removeConnected(socket.client.id);
@@ -41,10 +44,10 @@ io.on('connection', function(socket){
   socket.on('queue-me', function(id){
     qManager.addQ(id);
   });
+  
   socket.on('dq-me', function(id){
     qManager.removeQ(id);
   });
-
 });
 
 http.listen(port, "localhost", function(){
