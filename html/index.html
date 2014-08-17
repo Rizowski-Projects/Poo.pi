@@ -5,6 +5,29 @@
   </head>
   <body>
     <div id="status" class="status avail">
+      <div class="status-container">
+        <span id="status-msg"></span>
+      </div>
+    </div>
+    <div>
+      <fieldset>
+        <legend>Join a Queue</legend>
+        <label for="queue">Want to Join a Queue?</label>
+        <input id="queue" type="button" name="queue" value="Q Me">
+        <input id="dq" type="button" name="d-queue" value="DQ Me">
+      </fieldset>
+      <div>
+        <div class="lists">
+          <h3>Queue List</h3>
+          <ul id="queue-list">
+          </ul>
+        </div>
+        <div class="lists">
+          <h3>Who's Online</h3>
+          <ul id="online">
+          </ul>
+        </div>
+      </div>
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="socket.io/socket.io.js"></script>

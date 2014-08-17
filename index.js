@@ -4,6 +4,8 @@ var express = require('express'),
     io = require('socket.io')(http),
     path = require('path'),
     morgan = require('morgan'),
+    helpers = require('./js/server/helpers'),
+    qManager = require('./js/server/queueManager').import(io),
     port = 8080,
     net = require('net'),
     localHost = '127.0.0.1',
@@ -22,18 +24,32 @@ app.get('/', function(req, res){
 client.connect(localport, localHost);
 
 io.on('connection', function(socket){
-  socket.emit('welcome', {});
-  client.on('data', function(data){
-    var status = data.toString('utf8');
-    var bool = status.toLowerCase() == 'true';
-    socket.emit('status', bool);
-  });
-  //socket.emit('status', false);
-  socket.on('disconnect', function(){
-    console.log("User disconnected");
+
+  io.emit('welcome', {id: socket.client.id});
+  qManager.addConnected(socket.client.id);
+  qManager.updateQd();
+
+  client.on('data', function(response){
+    var status = response.toString('utf8');
+    var closed = status.toLowerCase() == 'true';
+    socket.emit('statusUpdate', closed);
   });
 
+  // socket.emit('statusUpdate', true);
+  socket.on('disconnect', function(){
+    //timed removal? Instant removal?
+    qManager.removeConnected(socket.client.id);
+  });
+
+  socket.on('queue-me', function(id){
+    qManager.addQ(id);
+  });
+  
+  socket.on('dq-me', function(id){
+    qManager.removeQ(id);
+  });
 });
-http.listen(port, function(){
+
+http.listen(port, "localhost", function(){
   console.log("Listening on *:" + port);
 });
