@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/rizowski/Poo.pi",
   "devDependencies": {
+    "cookie-session": "^1.0.2",
     "express": "^4.6.1",
+    "express-session": "^1.7.5",
     "socket.io": "^1.0.6"
   }
 }
