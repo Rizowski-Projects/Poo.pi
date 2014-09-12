@@ -6,8 +6,10 @@ var express = require('express'),
     morgan = require('morgan'),
     helpers = require('./js/server/helpers'),
     qManager = require('./js/server/queueManager').import(io),
-    session = require('cookie-session'),
-    route = require('./js/server/routes').import(app),
+    cookieSession = require('cookie-session'),
+    cookieParser = require('cookie-parser'),
+    uid = require('node-uuid'),
+    // route = require('./js/server/routes').import(app),
     port = 8080,
     net = require('net'),
     localHost = '127.0.0.1',
@@ -16,21 +18,24 @@ var express = require('express'),
     user = {};
 
 app.use(morgan());
-app.use(session({
-    keys: ['meincookie', 'meinOther'],
-    path: '/',
-    cookie: {
-      maxAge: 360000,
-      expires: 360000
-    }
-    // maxAge: 360000,
+app.use(cookieParser());
+app.use(cookieSession({
+  name: "PooCookie",
+  secret: "secret",
+  cookie: {
+    maxAge: new Date() * 3600000
+  },
+  overwrite: false
 }));
+
 app.get('/', function(req, res, next){
-  console.log(req);
-  user.id = req.sessionID;
-  // res.cookie('wtf', new Date(), {maxAge: 3600000})
-  // console.log(res)
-  // res.sendfile('index.html');
+  if(!req.cookies.pooper){
+    user.id = uid.v1();
+    res.cookie("pooper", user.id);
+  }else{
+    user.id = req.cookies.pooper;
+  }
+
   next();
 });
 app.use(express.static(path.join(__dirname, 'html')));
@@ -38,30 +43,30 @@ app.use(express.static(path.join(__dirname, 'style')));
 app.use(express.static(path.join(__dirname, 'js')));
 
 
-client.connect(localport, localHost);
+// client.connect(localport, localHost);
 
 io.on('connection', function(socket){
 
-  io.emit('welcome', {id: socket.client.id});
-  qManager.addConnected(socket.client.id);
+  io.emit('welcome', {id: user.id});
+  qManager.addConnected(user.id);
   qManager.updateQd();
 
-  client.on('data', function(response){
-    var status = response.toString('utf8');
-    var closed = status.toLowerCase() == 'true';
-    socket.emit('statusUpdate', closed);
-  });
+  // client.on('data', function(response){
+  //   var status = response.toString('utf8');
+  //   var closed = status.toLowerCase() == 'true';
+  //   socket.emit('statusUpdate', closed);
+  // });
 
   // socket.emit('statusUpdate', true);
   socket.on('disconnect', function(){
     //timed removal? Instant removal?
-    qManager.removeConnected(socket.client.id);
+    qManager.removeConnected(user.id);
   });
 
   socket.on('queue-me', function(id){
     qManager.addQ(id);
   });
-  
+
   socket.on('dq-me', function(id){
     qManager.removeQ(id);
   });
