@@ -1,10 +1,9 @@
-/*jshint quotmark: true, node: true, indent: 2 globalstrict: true, undef: true*/
 'use-strict';
 var manager = require('./array-manager')(),
     _ = require('underscore'),
-    log = require('bunyan').createLogger({name: 'session'});
+    log = require('bunyan').createLogger({name: 'session-manager'});
 
-module.exports = function(io){
+var sessionManager = function(io){
   var session = {
     add: function (user){
       if (_.isUndefined(user) || _.isUndefined(user.id)) return;
@@ -39,3 +38,5 @@ module.exports = function(io){
 
   return session;
 };
+
+module.exports = sessionManager;

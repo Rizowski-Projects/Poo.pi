@@ -8,7 +8,7 @@ At Towers Watson Exchange Solutions there is only 1 stall for many men in the de
 ## Starting this project
   - `git clone https://github.com/rizowski/Poo.pi.git poopi`
   - `cd poopi`
-  - `npm install -g instanbul mocha`
+  - `npm install -g istanbul mocha`
   - `npm install`
   - `npm start`
   - Open your browser to http://localhost:8080

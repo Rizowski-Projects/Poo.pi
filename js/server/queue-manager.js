@@ -1,10 +1,8 @@
-/* jshint undef: true, unused: true, globalstrict: true*/
-/* global module, require */
 'use strict';
 
-var manager = require('./array-manager')(),
-    _ = require('underscore'),
-    log = require('bunyan').createLogger({name: 'queue'});
+var manager = require('./array-manager'),
+  _ = require('lodash'),
+  log = require('bunyan').createLogger({name: 'queue-manager'});
 
 module.exports = function (io) {
   return {
@@ -28,5 +26,5 @@ module.exports = function (io) {
       log.info('Queue::Remove: Removing user: %s', id);
       io.emit('update:queue', manager.getAll());
     }
-  }
-}
+  };
+};

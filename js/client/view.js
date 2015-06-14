@@ -1,4 +1,4 @@
-/* jshint undef: true, unused: true, globalstrict: true*/
+/* global io, $ */
 
 'use strict';
 
@@ -12,51 +12,50 @@ var socket = io(),
     var $ul = $('#' + selector);
     $ul.html('');
     console.log(arr);
-    for (var loc in arr){
+    for (var loc in arr) {
       var display = !!arr[loc].username ? arr[loc].username : arr[loc].id;
-      console.log(selector +'-'+ arr[loc].id);
-      $ul.append('<li id="' + selector +'-'+ arr[loc].id + '">' + display + '</li>');
+      console.log(selector + '-' + arr[loc].id);
+      $ul.append('<li id="' + selector + '-' + arr[loc].id + '">' + display + '</li>');
     }
-  };
-
-function createCookie(name, value, days) {
+  },
+  createCookie = function (name, value, days) {
     var expires;
 
     if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toGMTString();
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toGMTString();
     } else {
-        expires = "";
+      expires = "";
     }
     document.cookie = escape(name) + "=" + escape(value) + expires + "; path=/";
-}
-
-function readCookie(name) {
+  },
+  readCookie = function (name) {
     var nameEQ = escape(name) + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return unescape(c.substring(nameEQ.length, c.length));
+      var c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return unescape(c.substring(nameEQ.length, c.length));
     }
     return null;
-}
-
-function eraseCookie(name) {
+  },
+  eraseCookie = function (name) {
     createCookie(name, "", -1);
-}
+  };
 
 socket.on("welcome", function (client) {
-  var cookie = readCookie("pooper");
-  console.log("cookie!:", cookie);
-  console.log(client);
-  if(client.id === undefined){
+  var cookie;
+  if (client.id === undefined) {
     console.error("broken");
     window.location.reload();
   }
-  if(!theClient){
+  if (!theClient) {
     theClient = client;
+  }
+  cookie = readCookie("pooper");
+  if (cookie === null) {
+    createCookie("pooper", client.id, 1);
   }
   //toastr notification
 });
@@ -73,11 +72,11 @@ socket.on('statusUpdate', function (open) {
   }
 });
 
-socket.on('update:connected', function(connected){
+socket.on('update:connected', function (connected) {
   popUl("online", connected);
 });
 
-socket.on('update:queue', function(queued){
+socket.on('update:queue', function (queued) {
   popUl("queued", queued);
 });
 

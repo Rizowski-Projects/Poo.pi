@@ -1,6 +1,4 @@
-/* jshint undef: true, unused: true */
-/* global module */
-
+'use strict'
 var exports = module.exports = {};
 
 function User() {
