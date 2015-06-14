@@ -11,5 +11,5 @@ notifications:
 before_install:
   - npm install -g istanbul mocha
 script:
-  - npm run ci
+  - npm run coverage
 
