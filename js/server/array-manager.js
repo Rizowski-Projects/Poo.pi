@@ -1,9 +1,9 @@
 'use strict';
 
-var _ = require('lodash'),
-  log = require('bunyan').createLogger({ name: 'array-manager' }),
-  array = [],
-  validItem;
+var _ = require('lodash');
+var log = require('bunyan').createLogger({ name: 'array-manager' });
+var array = [];
+var validItem;
 
 // TODO: reconfigure this to be the manager only
 // TODO: make connection/queue manager do its own stuff using this library
@@ -15,8 +15,8 @@ validItem = function (item) {
 var manager = {};
 
 manager.add = function (item) {
-  if (!validItem(item)) return;
-  log.info("Adding %s", item);
+  if (!validItem(item)) { return; }
+  log.info('Adding %s', item);
   if (item instanceof Array) {
     array = _.union(array, item);
   } else {
@@ -26,7 +26,7 @@ manager.add = function (item) {
 };
 
 manager.remove = function (item) {
-  if (!validItem(item)) return;
+  if (!validItem(item)) { return; }
   array = _.without(array, item);
   return array;
 };
@@ -42,7 +42,8 @@ manager.getAll = function () {
 };
 
 manager.removeAll = function () {
-  return array = [];
+  array = [];
+  return array;
 };
 
 manager.getIndex = function (context) {

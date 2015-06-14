@@ -1,24 +1,23 @@
-'use-strict';
-var manager = require('./array-manager')(),
-    _ = require('underscore'),
-    log = require('bunyan').createLogger({name: 'session-manager'});
+'use strict';
+var manager = require('./array-manager');
+var _ = require('underscore');
+var log = require('bunyan').createLogger({ name: 'session-manager' });
 
-var sessionManager = function(io){
+var sessionManager = function (io) {
   var session = {
-    add: function (user){
-      if (_.isUndefined(user) || _.isUndefined(user.id)) return;
-      if (manager.get('id', user.id)) return;
-      manager.add(user);
+    add: function (user) {
+      if (_.isUndefined(user) || _.isUndefined(user.id) || manager.get('id', user.id)) { return; }
       log.info('Session::Add: adding user: %s', user.id);
+      manager.add(user);
       var arrs = manager.getAll();
       io.emit('update:connected', arrs);
     },
     remove: function (id) {
       log.info('attempting to remove %s', id);
-      if (_.isUndefined(id)) return;
-      var user = manager.get("id", id);
-      if(_.isUndefined(user)){
-        log.warn("Session::Remove: user was undefined");
+      if (_.isUndefined(id)) { return; }
+      var user = manager.get('id', id);
+      if (_.isUndefined(user)) {
+        log.warn('Session::Remove: user was undefined');
         return;
       }
       manager.remove(user);
@@ -27,12 +26,12 @@ var sessionManager = function(io){
     }
   };
 
-  io.on('session:disconnected', function(id){
+  io.on('session:disconnected', function (id) {
     session.remove(id);
   });
 
-  io.on('session:add', function(user){
-    log.info("new session: %s", user.id);
+  io.on('session:add', function (user) {
+    log.info('new session: %s', user.id);
     session.add(user);
   });
 

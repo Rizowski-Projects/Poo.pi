@@ -4,12 +4,14 @@
   "description": "A Project for determining if a bathroom stall is open using a RPi and a door switch.",
   "main": "index.js",
   "scripts": {
-    "sb": "open -a 'Google Chrome' http://127.0.0.1:8080 && npm start",
-    "start": "node index.js | ./node_modules/bunyan/bin/bunyan -o short",
+    "lint": "esw --quiet",
+    "lw": "esw -w",
+    "sb": "node launch.js && npm start",
+    "start": "node index.js | bunyan -o short",
     "test": "mocha --watch --bail --colors --reporter spec ./spec",
-    "ci": "istanbul cover --report text -x \"**/spec/**\" _mocha spec -- -u exports -R spec",
-    "som": "istanbul cover --report lcovonly -x \"**/spec/**\" _mocha spec -- -u exports -R spec  && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "coverage": "istanbul cover --report text-summary -x \"**/spec/**\" node_modules/mocha/bin/_mocha spec -- -u exports -R spec"
+    "ci": "istanbul cover --report text -x \"**/spec/**\" node_modules/mocha/bin/_mocha spec -- -u exports -R spec",
+    "som": "istanbul cover --report lcovonly -x \"**/spec/**\" node_modules/mocha/bin/_mocha spec -- -u exports -R spec && cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "coverage": "istanbul cover --report text -x \"**/spec/**\" node_modules/mocha/bin/_mocha spec -- -u exports -R spec"
   },
   "repository": {
     "type": "git",
@@ -32,14 +34,14 @@
     "express": "^4.6.1",
     "express-session": "^1.10.1",
     "lodash": "^3.8.0",
-    "mocha": "^2.2.4",
+    "mocha": "^2.2.5",
     "mocha-lcov-reporter": "0.0.2",
     "node-uuid": "^1.4.1",
+    "open": "0.0.5",
     "proxyquire": "^1.4.0",
     "requirejs": "^2.1.15",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0",
-    "socket.io": "^1.0.6",
-    "underscore": "^1.7.0"
+    "socket.io": "^1.0.6"
   }
 }

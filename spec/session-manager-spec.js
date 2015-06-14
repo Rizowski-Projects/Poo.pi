@@ -1,1 +1,2 @@
-'use-strict';
+/// <reference path='../typings/mocha/mocha.d.ts'/>
+'use strict';

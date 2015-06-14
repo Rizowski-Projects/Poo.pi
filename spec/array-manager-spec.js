@@ -1,14 +1,15 @@
-/// <reference path="../typings/mocha/mocha.d.ts"/>
-'use-strict';
-var proxy = require('proxyquire'),
-  chai = require('chai'),
-  expect = chai.expect,
-  sinon = require('sinon'),
-  sinonChai = require('sinon-chai');
+/// <reference path='../typings/mocha/mocha.d.ts'/>
+'use strict';
+
+var proxy = require('proxyquire');
+var chai = require('chai');
+var expect = chai.expect;
+var sinon = require('sinon');
+var sinonChai = require('sinon-chai');
 
 chai.use(sinonChai);
 
-describe("Array Manager", function () {
+describe('Array Manager', function () {
   var manager, items;
   beforeEach(function () {
     var mock = {
@@ -19,35 +20,35 @@ describe("Array Manager", function () {
       }
     };
     items = [{
-        name: "jaun"
-      },{
-        name: "doe"
-      },{
-        name: "trey"
+        name: 'jaun'
+      }, {
+        name: 'doe'
+      }, {
+        name: 'trey'
       }];
     manager = proxy('../js/server/array-manager', mock);
   });
-  
-  describe("removeAll()", function(){
+
+  describe('removeAll()', function(){
     beforeEach(function(){
       manager.add(items);
     });
 
-    it("resets the array", function(){
+    it('resets the array', function(){
       var array = manager.removeAll();
       expect(array.length).to.equal(0);
     });
   });
 
-  describe("getAll()", function(){
+  describe('getAll()', function(){
     beforeEach(function(){
       manager.add(items);
     });
-    
+
     afterEach(function(){
       manager.removeAll();
     });
-    
+
     it('returns everything in the manager', function(){
       var arr = manager.getAll();
       expect(arr.length).to.equal(3);
@@ -57,24 +58,24 @@ describe("Array Manager", function () {
     });
   });
 
-  describe("getIndex()", function(){
+  describe('getIndex()', function(){
     var searchItem;
     beforeEach(function(){
-      searchItem = {name: "hello"};
-      manager.add([{name: "bob"}, searchItem]);
+      searchItem = {name: 'hello'};
+      manager.add([{name: 'bob'}, searchItem]);
     });
 
     afterEach(function(){
       manager.removeAll();
     });
 
-    it("returns the index of an item", function(){
+    it('returns the index of an item', function(){
       var index = manager.getIndex(searchItem);
       expect(index).to.equal(1);
     });
   });
 
-  describe("update()", function(){
+  describe('update()', function(){
     beforeEach(function(){
       manager.add(items);
     });
@@ -83,12 +84,12 @@ describe("Array Manager", function () {
       manager.removeAll();
     });
 
-    it("returns the array", function(){
+    it('returns the array', function(){
       var array = manager.update();
       expect(array).to.not.be.undefined;
     });
 
-    it("replaces the item at an index", function(){
+    it('replaces the item at an index', function(){
       var first = items[0];
       first.id = 5;
       manager.update({name: first.name}, first);
@@ -97,49 +98,49 @@ describe("Array Manager", function () {
     });
   });
 
-  describe("get()", function(){
+  describe('get()', function(){
     beforeEach(function(){
       manager.add(items);
     });
-    
+
     afterEach(function(){
       manager.removeAll();
     });
 
     it('gets an item from the array', function(){
-      var found = manager.get("name", items[0].name);
+      var found = manager.get('name', items[0].name);
       expect(found).to.exist;
       expect(found).to.deep.equal(items[0]);
     });
   });
 
-  describe("remove()", function(){
+  describe('remove()', function(){
     beforeEach(function(){
       manager.add(items);
     });
-    
+
     it('removes an element from the array', function(){
       var juan = items[0];
       var arr = manager.remove(juan);
-      var managerArray = manager.getAll(); 
+      var managerArray = manager.getAll();
       expect(managerArray).to.deep.equal(arr);
       expect(managerArray).to.not.contain(juan);
     });
   });
 
-  describe("add()", function(){
+  describe('add()', function(){
     afterEach(function(){
       manager.removeAll();
     });
 
     it('adds an Item to the array', function () {
-      var item = { name: "hello" };
+      var item = { name: 'hello' };
       manager.add(item);
       expect(manager.getAll()[0]).to.deep.equal(item);
     });
 
     it('adds an array of items', function(){
-      manager.add([{},{},{},{}]);
+      manager.add([{}, {}, {}, {}]);
       expect(manager.getAll().length).to.equal(4);
     });
   });

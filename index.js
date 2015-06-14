@@ -27,7 +27,7 @@ var express = require('express'),
 app.use(cookieParser());
 
 app.get('*', function (req, res, next) {
-  log.info('Request came in for %s', req.path);
+  log.info('Req:', req.path);
   //  if (req.cookies.pooper) {
 
   //  }

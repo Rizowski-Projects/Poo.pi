@@ -1,9 +1,8 @@
-'use strict'
-var exports = module.exports = {};
+'use strict';
 
 function User() {
-  this.id = "";
-  this.name = "";
+  this.id = '';
+  this.name = '';
 }
 
-exports.user = User;
+module.exports = User;
