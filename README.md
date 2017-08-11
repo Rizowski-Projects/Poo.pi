@@ -1,5 +1,7 @@
 Poo.pi
 ======
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Rizowski-Projects/Poo.pi.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/rizowski/Poo.pi.svg?branch=master)](https://travis-ci.org/rizowski/Poo.pi)
 
 [![Join the chat at https://gitter.im/rizowski/Poo.pi](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rizowski/Poo.pi?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
